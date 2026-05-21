@@ -34,6 +34,26 @@ logger.warn('slow request', { ms: 420 })
 
 Open DevTools → **Console** to see colored badges.
 
+## Examples
+
+### Console output
+
+Each segment gets its own colored badge (namespace + one badge per argument):
+
+![Console example showing styled badges for namespace and log arguments](./docs/images/console-example.png)
+
+### Playground
+
+Run `npm run dev` and open http://localhost:3000 to try the interactive demo:
+
+![Playground demo page with HTML, CSS, and JS sections](./docs/images/playground.png)
+
+Regenerate screenshots after UI changes:
+
+```bash
+npm run screenshots
+```
+
 ## Logging controls
 
 Mute output globally or per level:
