@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>blah — playground</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <h1>blah playground</h1>
+      <p class="hint">
+        Edit <code>playground/index.html</code>, <code>playground/style.css</code>,
+        and <code>playground/main.ts</code> — changes reload instantly. In dev,
+        <code>import.meta.env.DEV</code> enables debug logging (including muted
+        levels).
+      </p>
+    </header>
+
+    <main class="playground">
+      <section class="card" id="demo-html">
+        <h2>HTML</h2>
+        <p class="lede">Tweak markup here or in <code>index.html</code>.</p>
+        <button type="button" class="btn" id="btn-primary">Click me</button>
+        <output class="output" id="click-output" for="btn-primary"
+          >No clicks yet.</output
+        >
+      </section>
+
+      <section class="card" id="demo-css">
+        <h2>CSS</h2>
+        <div class="swatches">
+          <span class="swatch swatch-a">A</span>
+          <span class="swatch swatch-b">B</span>
+          <span class="swatch swatch-c">C</span>
+        </div>
+        <p class="lede">
+          Colors and layout live in <code>playground/style.css</code>.
+        </p>
+      </section>
+
+      <section class="card" id="demo-js">
+        <h2>JavaScript / TypeScript</h2>
+        <p class="lede">Logic runs from <code>playground/main.ts</code>.</p>
+        <label class="field">
+          <span>Message</span>
+          <input
+            type="text"
+            id="message-input"
+            value="Hello from TypeScript!"
+          />
+        </label>
+        <p class="output" id="message-output" aria-live="polite"></p>
+      </section>
+    </main>
+
+    <script type="module" src="/main.ts"></script>
+  </body>
+</html>
