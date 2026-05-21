@@ -1,6 +1,6 @@
 # blah
 
-[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 Open-source **browser** console logger with a namespace badge and per-argument colors using `console` `%c` CSS.
 
@@ -47,12 +47,6 @@ Each segment gets its own colored badge (namespace + one badge per argument):
 Run `npm run dev` and open http://localhost:3000 to try the interactive demo:
 
 ![Playground demo page with HTML, CSS, and JS sections](./docs/images/playground.png)
-
-Regenerate screenshots after UI changes:
-
-```bash
-npm run screenshots
-```
 
 ## Logging controls
 
@@ -123,6 +117,6 @@ Playground lives in `playground/`; the publishable package is `src/` → `dist/`
 
 ## License
 
-This project is **open source** under the [ISC License](LICENSE) (OSI-approved, permissive — similar to MIT).
+This project is **open source** under the [MIT License](LICENSE).
 
-You may use, copy, modify, and distribute it freely, including in commercial projects, as long as the license notice is preserved.
+You may use, copy, modify, and distribute it freely, including in commercial projects, as long as the copyright and license notice are included.

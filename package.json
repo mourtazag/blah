@@ -40,7 +40,7 @@
     "typescript"
   ],
   "author": "mourtazag",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mourtazag/blah.git"
