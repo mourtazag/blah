@@ -31,6 +31,20 @@ class Blah {
     this.resolvedArgStyles = (options.argStyles ?? []).map(style => toCss(style))
     this.logging = resolveLogging(options.logging)
     this.debug = options.debug ?? false
+
+    this.bindMethods()
+  }
+
+  /** Keep `this` when methods are passed around or destructured */
+  private bindMethods(): void {
+    this.log = this.log.bind(this)
+    this.info = this.info.bind(this)
+    this.warn = this.warn.bind(this)
+    this.error = this.error.bind(this)
+    this.setDebug = this.setDebug.bind(this)
+    this.setLogging = this.setLogging.bind(this)
+    this.isEnabled = this.isEnabled.bind(this)
+    this.print = this.print.bind(this)
   }
 
   /** Force all levels on/off, overriding `logging` restrictions */

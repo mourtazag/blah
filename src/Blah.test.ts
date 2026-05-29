@@ -51,6 +51,15 @@ describe('Blah', () => {
     expect(secondArgStyle).toContain('background-color: yellow')
   })
 
+  it('log works when extracted without manual bind', () => {
+    const logger = new Blah({ namespace: { name: 'App' } })
+    const log = logger.log
+
+    log('detached')
+
+    expect(console.log).toHaveBeenCalledOnce()
+  })
+
   it('routes info, warn, and error to matching console methods', () => {
     const logger = createLogger()
 
