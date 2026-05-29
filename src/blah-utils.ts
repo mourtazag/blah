@@ -1,7 +1,9 @@
 import type { BadgeStyle, LoggingConfig } from './blah-types'
 
 export const BASE_BADGE =
-  'padding: 2px 4px; margin: 2px; border-radius: 4px; font-weight: bold;'
+  'padding: 2px 4px; margin: 2px; border-radius: 4px;'
+
+export const BOLD = 'font-weight: bold;'
 
 export const DEFAULT_NAMESPACE_STYLE: Required<BadgeStyle> = {
   color: 'white',
@@ -37,39 +39,49 @@ export function resolveLogging(config: LoggingConfig = {}): Required<LoggingConf
 }
 
 /** Turn { color, bgColor } into a CSS string for console %c */
-export function toCss(style: BadgeStyle, fallback: BadgeStyle = {}): string {
+export function toCss(
+  style: BadgeStyle,
+  fallback: BadgeStyle = {},
+  options: { bold?: boolean } = {},
+): string {
   const color = style.color ?? fallback.color ?? DEFAULT_ARG_STYLE.color
   const bgColor = style.bgColor ?? fallback.bgColor ?? DEFAULT_ARG_STYLE.bgColor
-  return `${BASE_BADGE} color: ${color}; background-color: ${bgColor};`
+  const weight = options.bold ? BOLD : ''
+  return `${BASE_BADGE} color: ${color}; background-color: ${bgColor}; ${weight}`.trim()
 }
 
-/** Convert any log value into text for a %c badge */
+/** Convert primitives into text embedded in a %c badge */
 export function formatArg(value: unknown): string {
   if (typeof value === 'string') return value
-  if (typeof value === 'object' && value !== null) {
-    try {
-      return JSON.stringify(value)
-    } catch {
-      return String(value)
-    }
-  }
   return String(value)
 }
 
-/** Build the format string + CSS values that console.log expects */
+function isExpandableObject(value: unknown): value is object {
+  return typeof value === 'object' && value !== null
+}
+
+/** Build the format string + values that console.log expects */
 export function buildConsolePayload(
   namespace: string,
   namespaceStyle: string,
   resolvedArgStyles: string[],
   args: unknown[],
-): [string, ...string[]] {
+): [string, ...unknown[]] {
   let format = `%c${namespace}`
-  const styles: string[] = [namespaceStyle]
+  const values: unknown[] = [namespaceStyle]
 
   for (const [index, arg] of args.entries()) {
-    format += ` %c${formatArg(arg)}`
-    styles.push(resolvedArgStyles[index] ?? toCss({}))
+    const style = resolvedArgStyles[index] ?? toCss({})
+
+    if (isExpandableObject(arg)) {
+      // %o keeps DevTools objects expandable (unlike JSON in the format string)
+      format += ' %c %o'
+      values.push(style, arg)
+    } else {
+      format += ` %c${formatArg(arg)}`
+      values.push(style)
+    }
   }
 
-  return [format, ...styles]
+  return [format, ...values]
 }

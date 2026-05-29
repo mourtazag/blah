@@ -3,7 +3,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Styled browser console logger with namespace badges and per-argument colors",
   "type": "module",
   "sideEffects": false,

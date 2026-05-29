@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   BASE_BADGE,
+  BOLD,
   DEFAULT_ARG_STYLE,
   DEFAULT_LOGGING,
   DEFAULT_NAMESPACE_STYLE,
@@ -61,6 +62,13 @@ describe('toCss', () => {
     expect(css).toContain(`color: ${DEFAULT_NAMESPACE_STYLE.color}`)
     expect(css).toContain(`background-color: ${DEFAULT_NAMESPACE_STYLE.bgColor}`)
   })
+
+  it('applies bold only when requested', () => {
+    expect(toCss({ color: 'red', bgColor: 'blue' })).not.toContain(BOLD)
+    expect(toCss({ color: 'red', bgColor: 'blue' }, {}, { bold: true })).toContain(
+      BOLD,
+    )
+  })
 })
 
 describe('formatArg', () => {
@@ -72,16 +80,6 @@ describe('formatArg', () => {
     expect(formatArg(42)).toBe('42')
     expect(formatArg(true)).toBe('true')
   })
-
-  it('JSON-stringifies plain objects', () => {
-    expect(formatArg({ ok: true })).toBe('{"ok":true}')
-  })
-
-  it('falls back to String for non-JSON-serializable values', () => {
-    const circular: { self?: unknown } = {}
-    circular.self = circular
-    expect(formatArg(circular)).toBe('[object Object]')
-  })
 })
 
 describe('buildConsolePayload', () => {
@@ -90,8 +88,8 @@ describe('buildConsolePayload', () => {
     DEFAULT_NAMESPACE_STYLE,
   )
   const argStyles = [
-    toCss({ color: 'white', bgColor: 'blue' }),
-    toCss({ color: 'white', bgColor: 'yellow' }),
+    toCss({ color: 'white', bgColor: 'blue' }, {}, { bold: true }),
+    toCss({ color: 'white', bgColor: 'yellow' }, {}, { bold: true }),
   ]
 
   it('builds format string with one %c per segment', () => {
@@ -131,8 +129,11 @@ describe('buildConsolePayload', () => {
     )
   })
 
-  it('formats object arguments in the format string', () => {
-    const [format] = buildConsolePayload('App', namespaceStyle, [], [{ x: 1 }])
-    expect(format).toBe('%cApp %c{"x":1}')
+  it('passes object arguments with %o so DevTools can expand them', () => {
+    const obj = { x: 1 }
+    const payload = buildConsolePayload('App', namespaceStyle, [], [obj])
+
+    expect(payload[0]).toBe('%cApp %c %o')
+    expect(payload[3]).toEqual(obj)
   })
 })

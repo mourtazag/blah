@@ -73,12 +73,14 @@ describe('Blah', () => {
     expect(console.log).not.toHaveBeenCalled()
   })
 
-  it('stringifies object arguments in the format string', () => {
+  it('passes object arguments with %o for native DevTools expansion', () => {
     const logger = createLogger()
-    logger.log({ ok: true })
+    const obj = { ok: true }
+    logger.log(obj)
 
-    const [format] = vi.mocked(console.log).mock.calls[0]!
-    expect(format).toBe('%cApp %c{"ok":true}')
+    const call = vi.mocked(console.log).mock.calls[0]!
+    expect(call[0]).toBe('%cApp %c %o')
+    expect(call[3]).toEqual(obj)
   })
 
   it('prints nothing when logging.enabled is false', () => {

@@ -28,7 +28,9 @@ class Blah {
       options.namespace.style ?? {},
       DEFAULT_NAMESPACE_STYLE,
     )
-    this.resolvedArgStyles = (options.argStyles ?? []).map(style => toCss(style))
+    this.resolvedArgStyles = (options.argStyles ?? []).map(style =>
+      toCss(style, {}, { bold: true }),
+    )
     this.logging = resolveLogging(options.logging)
     this.debug = options.debug ?? false
 
